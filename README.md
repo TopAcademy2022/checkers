@@ -1,0 +1,2 @@
+# checkers
+The simple game
