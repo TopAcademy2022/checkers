@@ -5,6 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Checkers"
         mc:Ignorable="d"
-        Title="Checkers" Height="450" Width="800">
+        Title="Checkers" Height="800" Width="800">
+    <Window.Background>
+        <ImageBrush ImageSource="/resource/board.png"/>
+    </Window.Background>
     <Grid></Grid>
 </Window>
