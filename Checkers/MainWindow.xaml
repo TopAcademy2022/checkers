@@ -9,5 +9,4 @@
     <Window.Background>
         <ImageBrush ImageSource="/resource/board.png"/>
     </Window.Background>
-    <Grid></Grid>
 </Window>

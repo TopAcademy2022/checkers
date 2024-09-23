@@ -7,6 +7,8 @@ namespace Checkers
 		public MainWindow()
 		{
 			InitializeComponent();
+
+			GridGame game = new GridGame(this);
 		}
 	}
 }
