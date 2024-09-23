@@ -1,6 +1,6 @@
 namespace CheckersTests
 {
-    public class Tests
+    public class GameFieldTests
     {
         [Fact]
         public void Test1()
