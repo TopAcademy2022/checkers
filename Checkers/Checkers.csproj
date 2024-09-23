@@ -9,11 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="resource\board.png" />
+    <None Remove="Resource\board.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="resource\board.png">
+    <Resource Include="Resource\board.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

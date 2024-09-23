@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Checkers", "Checkers\Checkers.csproj", "{966D14D6-E580-4156-B587-72B0FE3030BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckersTests", "CheckersTests\CheckersTests.csproj", "{39DCC556-67BB-4B13-B6EB-AD7E3E4F554A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Checkers.Tests", "Tests\Checkers.Tests\Checkers.Tests.csproj", "{39DCC556-67BB-4B13-B6EB-AD7E3E4F554A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
