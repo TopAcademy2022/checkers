@@ -10,6 +10,7 @@ namespace Checkers
 			InitializeComponent();
 
 			GraphicalGameField game = new GraphicalGameField(this);
+			game.RenderGameField();
 		}
 	}
 }
