@@ -1,16 +1,17 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using Checkers.Logic;
+using Checkers.Logic.Interfaces;
 
 namespace Checkers.Graphics
 {
 	public class GraphicalGameField : Grid
 	{
-		private GameField _gameField;
+		private ICheckersInterface _gameField;
 
 		public GraphicalGameField(Window parentElement)
 		{
-			this._gameField = new GameField();
+			this._gameField = new CheckersInterface();
 
 			parentElement.Content = this;
 
@@ -23,7 +24,7 @@ namespace Checkers.Graphics
 
 		public void RenderGameField()
 		{
-			byte[,] logicalGameField = this._gameField.GetCheckersField();
+			byte[,] logicalGameField = this._gameField.GetGameFieldAsByteArray();
 
 			for (int i = 0; i < GameField.COUNT_ROWS; i++)
 			{
