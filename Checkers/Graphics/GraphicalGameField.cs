@@ -49,5 +49,14 @@ namespace Checkers.Graphics
 				}
 			}
 		}
+
+		public void RerenderGameField()
+		{
+            // Clear
+            this.Children.Clear();
+
+            // Render again
+            this.RenderGameField();
+		}
 	}
 }
