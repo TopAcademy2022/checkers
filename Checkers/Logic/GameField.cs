@@ -59,5 +59,11 @@
             this._checkersField[7, 4] = 2;
             this._checkersField[7, 6] = 2;
         }
-    }
+
+		public byte[,] GetCheckersField()
+		{
+			return this._checkersField;
+
+		}
+	}
 }
