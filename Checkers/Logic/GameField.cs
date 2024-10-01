@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
+using static Checkers.Logic.GameFigure;
 
 namespace Checkers.Logic
 {
@@ -73,11 +73,56 @@ namespace Checkers.Logic
 			return result;
 		}
 
-		private List<KeyValuePair<char, int>> GetRightDiagonal()
+		/*!
+		* @brief Getting the right diagonal of one specific figure.
+		 * @param [in] gameFigure - We use it to know, for which figure we calculate the diagonals.
+		 * @return List of every field coordinate in right diagonal.
+		 */
+		private List<KeyValuePair<char, int>> GetRightDiagonal(GameFigure gameFigure)
 		{
-			List<KeyValuePair<char, int>> result = new List<KeyValuePair<char, int>>();
+			List<KeyValuePair<char, int>> result = new List<KeyValuePair<char, int>>(); ///< All possible positions
+			KeyValuePair<char, int> presentPosition = this._checkersField[gameFigure]; ///< current position
 
+			const uint CHAR_CODE_A = 97; ///<letter index
+			const uint CHAR_CODE_H = 104; ///<letter index
 
+			DirectionMovement movement = gameFigure.GetDirectionMovement(); ///< Direction Movement
+
+			if (movement == DirectionMovement.Up)
+			{
+				for (int i = 1; i < COUNT_ROWS; ++i)
+				{
+					if (presentPosition.Key + i <= CHAR_CODE_H && presentPosition.Key + i >= CHAR_CODE_A && (presentPosition.Value + i) <= COUNT_ROWS)
+					{
+						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key + i), presentPosition.Value + i)); ///< position addition
+					}
+				}
+			}
+			else if (movement == DirectionMovement.Down)
+			{
+				for (int i = 1; i < COUNT_ROWS; ++i)
+				{
+					if (presentPosition.Key - i <= CHAR_CODE_H && presentPosition.Key - i >= CHAR_CODE_A && presentPosition.Value - i >= 1)
+					{
+						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key - i), presentPosition.Value - i)); ///< position addition
+					}
+				}
+			}
+
+			if (gameFigure.IsQueen())
+			{
+				for (int i = 1; i < COUNT_ROWS; ++i)
+				{
+					if (presentPosition.Key + i <= CHAR_CODE_H && presentPosition.Key + i >= CHAR_CODE_A && (presentPosition.Value + i) <= COUNT_ROWS && movement != DirectionMovement.Up)
+					{
+						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key + i), presentPosition.Value + i)); ///< position addition
+					}
+					if (presentPosition.Key - i <= CHAR_CODE_H && presentPosition.Key - i >= CHAR_CODE_A && presentPosition.Value - i >= 1 && movement != DirectionMovement.Down)
+					{
+						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key - i), presentPosition.Value - i)); ///< position addition
+					}
+				}
+			}
 
 			return result;
 		}
