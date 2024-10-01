@@ -45,10 +45,5 @@
 		{
 			return this._isQueen;
 		}
-
-		public DirectionMovement GetDirectionMovement()
-		{
-			return this._directionMovement;
-		}
 	}
 }

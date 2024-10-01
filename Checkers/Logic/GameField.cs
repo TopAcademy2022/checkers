@@ -101,7 +101,7 @@ namespace Checkers.Logic
 				}
 			}
 
-			if (gameFigure.GetQueen()) ///< Checking for queen
+			if (gameFigure.GetIsQueen()) ///< Checking for queen
 			{
 				for (byte i = 1; i < COUNT_ROWS; i++)
 				{
@@ -155,7 +155,7 @@ namespace Checkers.Logic
 				}
 			}
 
-			if (gameFigure.IsQueen())
+			if (gameFigure.GetIsQueen())
 			{
 				for (int i = 1; i < COUNT_ROWS; ++i)
 				{
