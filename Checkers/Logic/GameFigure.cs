@@ -36,5 +36,15 @@
 		{
 			this._isQueen = true;
 		}
+
+		public bool GetQueen()
+		{
+			return this._isQueen;
+		}
+
+		public DirectionMovement GetDirectionMovement()
+		{
+			return this._directionMovement;
+		}
 	}
 }
