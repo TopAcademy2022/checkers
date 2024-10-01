@@ -42,7 +42,7 @@
 			this._isQueen = true;
 		}
 
-		public bool IsQueen()
+		public bool GetIsQueen()
 		{
 			return this._isQueen;
 		}
