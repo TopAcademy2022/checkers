@@ -41,10 +41,14 @@
 		{
 			this._isQueen = true;
 		}
-
 		public bool GetIsQueen()
 		{
 			return this._isQueen;
+		}
+
+		public DirectionMovement GetDirectionMovement()
+		{
+			return this._directionMovement;
 		}
 	}
 }

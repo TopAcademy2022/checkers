@@ -64,11 +64,57 @@ namespace Checkers.Logic
 			return result;
 		}
 
-		private List<KeyValuePair<char, int>> GetLeftDiagonal()
+		/*!
+		* @brief Getting the left diagonal of one specific figure.
+		* @param[in] gameFigure - We use it to know, for which figure we calculate the diagonals.
+		* @return List of every field coordinate in left diagonal.
+		*/
+		private List<KeyValuePair<char, int>> GetLeftDiagonal(GameFigure gameFigure)
 		{
 			List<KeyValuePair<char, int>> result = new List<KeyValuePair<char, int>>();
 
+			KeyValuePair<char, int> currentPosition = this._checkersField[gameFigure];
 
+			GameFigure.DirectionMovement directionMovement = gameFigure.GetDirectionMovement(); ///< Getting the direction of checkers movement
+
+			byte CHAR_CODE_H = 104; ///< Char code from Ascii table
+			byte CHAR_CODE_A = 97;  ///< Char code from Ascii table
+
+			if (directionMovement == GameFigure.DirectionMovement.Up) ///< Normal figure moving down
+			{
+				for (byte i = 1; i <= COUNT_ROWS; i++)
+				{
+					if ((currentPosition.Key - i) >= CHAR_CODE_A && currentPosition.Value + i <= 8)
+					{
+						result.Add(new KeyValuePair<char, int>((char)(currentPosition.Key - i), currentPosition.Value + i));
+					}
+				}
+			}
+			else ///< Normal figure moving up
+			{
+				for (byte i = 1; i <= COUNT_ROWS; i++)
+				{
+					if ((currentPosition.Key + i) <= CHAR_CODE_H && currentPosition.Value - i >= 1)
+					{
+						result.Add(new KeyValuePair<char, int>((char)(currentPosition.Key + i), currentPosition.Value - i));
+					}
+				}
+			}
+
+			if (gameFigure.GetQueen()) ///< Checking for queen
+			{
+				for (byte i = 1; i < COUNT_ROWS; i++)
+				{
+					if ((currentPosition.Key + i) <= CHAR_CODE_H && currentPosition.Value - i >= 1 && directionMovement == GameFigure.DirectionMovement.Up)
+					{
+						result.Add(new KeyValuePair<char, int>((char)(currentPosition.Key + i), currentPosition.Value - i));
+					}
+					if ((currentPosition.Key - i) >= CHAR_CODE_A && currentPosition.Value + i <= 8 && directionMovement == GameFigure.DirectionMovement.Down)
+					{
+						result.Add(new KeyValuePair<char, int>((char)(currentPosition.Key - i), currentPosition.Value + i));
+					}
+				}
+			}
 
 			return result;
 		}
