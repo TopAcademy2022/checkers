@@ -32,19 +32,18 @@
 			return this._color;
 		}
 
+		public DirectionMovement GetDirectionMovement()
+		{
+			return this._directionMovement;
+		}
+
 		public void SetQueen()
 		{
 			this._isQueen = true;
 		}
-
-		public bool GetQueen()
+		public bool GetIsQueen()
 		{
 			return this._isQueen;
-		}
-
-		public DirectionMovement GetDirectionMovement()
-		{
-			return this._directionMovement;
 		}
 	}
 }
