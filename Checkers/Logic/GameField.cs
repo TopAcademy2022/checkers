@@ -73,11 +73,51 @@ namespace Checkers.Logic
 			return result;
 		}
 
-		private List<KeyValuePair<char, int>> GetRightDiagonal()
+		private List<KeyValuePair<char, int>> GetRightDiagonal(GameFigure DirectionMovement)
 		{
 			List<KeyValuePair<char, int>> result = new List<KeyValuePair<char, int>>();
 
+			KeyValuePair<char, int> presentPosition = this._checkersField[DirectionMovement];
 
+			if (!DirectionMovement.IsQueen())
+			{
+				if (DirectionMovement.GetDirectionMovement() == GameFigure.DirectionMovement.Up)
+				{
+					for (int i = 1; i < COUNT_ROWS; ++i)
+					{
+						if (presentPosition.Key + i <= 104 && presentPosition.Key + i >= 97 && (presentPosition.Value + i) <= COUNT_ROWS)
+						{
+							result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key + i), presentPosition.Value + i));
+
+						}
+					}
+				}
+				else if (DirectionMovement.GetDirectionMovement() == GameFigure.DirectionMovement.Down)
+				{
+					for (int i = 1; i < COUNT_ROWS; ++i)
+					{
+						if (presentPosition.Key - i <= 104 && presentPosition.Key - i >= 97 && presentPosition.Value - i >= 1)
+						{
+							result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key - i), presentPosition.Value - i));
+						}
+					}
+				}
+			}
+			else
+			{
+				for (int i = 1; i < COUNT_ROWS; ++i)
+				{
+					if (presentPosition.Key + i <= 104 && presentPosition.Key + i >= 97 && (presentPosition.Value + i) <= COUNT_ROWS)
+					{
+						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key + i), presentPosition.Value + i));
+
+					}
+					if (presentPosition.Key - i <= 104 && presentPosition.Key - i >= 97 && presentPosition.Value - i >= 1)
+					{
+						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key - i), presentPosition.Value - i));
+					}
+				}
+			}
 
 			return result;
 		}
