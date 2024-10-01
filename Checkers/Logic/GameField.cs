@@ -81,10 +81,10 @@ namespace Checkers.Logic
 		private List<KeyValuePair<char, int>> GetRightDiagonal(GameFigure gameFigure)
 		{
 			List<KeyValuePair<char, int>> result = new List<KeyValuePair<char, int>>(); ///< All possible positions
-			KeyValuePair<char, int> presentPosition = this._checkersField[gameFigure]; ///< current position
+			KeyValuePair<char, int> presentPosition = this._checkersField[gameFigure]; ///< Current position
 
-			const uint CHAR_CODE_A = 97; ///<letter index
-			const uint CHAR_CODE_H = 104; ///<letter index
+			const uint CHAR_CODE_A = 97; ///< Letter index
+			const uint CHAR_CODE_H = 104; ///< Letter index
 
 			DirectionMovement movement = gameFigure.GetDirectionMovement(); ///< Direction Movement
 
@@ -94,7 +94,7 @@ namespace Checkers.Logic
 				{
 					if (presentPosition.Key + i <= CHAR_CODE_H && presentPosition.Key + i >= CHAR_CODE_A && (presentPosition.Value + i) <= COUNT_ROWS)
 					{
-						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key + i), presentPosition.Value + i)); ///< position addition
+						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key + i), presentPosition.Value + i)); ///< Position addition
 					}
 				}
 			}
@@ -104,7 +104,7 @@ namespace Checkers.Logic
 				{
 					if (presentPosition.Key - i <= CHAR_CODE_H && presentPosition.Key - i >= CHAR_CODE_A && presentPosition.Value - i >= 1)
 					{
-						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key - i), presentPosition.Value - i)); ///< position addition
+						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key - i), presentPosition.Value - i)); ///< Position addition
 					}
 				}
 			}
@@ -115,11 +115,11 @@ namespace Checkers.Logic
 				{
 					if (presentPosition.Key + i <= CHAR_CODE_H && presentPosition.Key + i >= CHAR_CODE_A && (presentPosition.Value + i) <= COUNT_ROWS && movement != DirectionMovement.Up)
 					{
-						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key + i), presentPosition.Value + i)); ///< position addition
+						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key + i), presentPosition.Value + i)); ///< Position addition
 					}
 					if (presentPosition.Key - i <= CHAR_CODE_H && presentPosition.Key - i >= CHAR_CODE_A && presentPosition.Value - i >= 1 && movement != DirectionMovement.Down)
 					{
-						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key - i), presentPosition.Value - i)); ///< position addition
+						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key - i), presentPosition.Value - i)); ///< Position addition
 					}
 				}
 			}
