@@ -49,7 +49,9 @@ namespace Checkers.Graphics
 
 				}
 			}
-		}
+
+		
+        }
 
 		public void RerenderGameField()
 		{
