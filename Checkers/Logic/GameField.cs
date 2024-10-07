@@ -232,5 +232,37 @@ namespace Checkers.Logic
 
 			return result;
 		}
-	}
+       
+		public byte CheckWinner()
+        {
+            byte draw = 0;
+            byte whiteWin = 1;
+            byte blackWin = 2;
+
+            bool isWhiteWin = false;
+            bool isBlackWin = false;
+
+            foreach (KeyValuePair<GameFigure, KeyValuePair<char, int>> keyValue in this._checkersField)
+            {
+                if (keyValue.Key.GetColor() == GameFigure.GameColor.White)
+                {
+                    isWhiteWin = true;
+                }
+                else if (keyValue.Key.GetColor() == GameFigure.GameColor.Black)
+                {
+                    isBlackWin = true;
+                }
+                if (isWhiteWin && !isBlackWin)
+                {
+                    return whiteWin;
+                }
+                else if (!isWhiteWin && isBlackWin)
+                {
+                    return blackWin;
+                }
+            }
+
+            return draw;
+        }
+    }
 }
