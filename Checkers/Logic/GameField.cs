@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using static Checkers.Logic.GameFigure;
 
 namespace Checkers.Logic
 {
@@ -108,11 +107,13 @@ namespace Checkers.Logic
 			{
 				for (byte i = 1; i < COUNT_ROWS; i++)
 				{
-					if ((currentPosition.Key + i) <= CHAR_CODE_H && currentPosition.Value - i >= 1 && directionMovement == GameFigure.DirectionMovement.Up)
+					if ((currentPosition.Key + i) <= CHAR_CODE_H && currentPosition.Value - i >= 1 && 
+						directionMovement == GameFigure.DirectionMovement.Up)
 					{
 						result.Add(new KeyValuePair<char, int>((char)(currentPosition.Key + i), currentPosition.Value - i));
 					}
-					if ((currentPosition.Key - i) >= CHAR_CODE_A && currentPosition.Value + i <= 8 && directionMovement == GameFigure.DirectionMovement.Down)
+					if ((currentPosition.Key - i) >= CHAR_CODE_A && currentPosition.Value + i <= 8 && 
+						directionMovement == GameFigure.DirectionMovement.Down)
 					{
 						result.Add(new KeyValuePair<char, int>((char)(currentPosition.Key - i), currentPosition.Value + i));
 					}
@@ -135,23 +136,25 @@ namespace Checkers.Logic
 			const uint CHAR_CODE_A = 97; ///< Char code from Ascii table
 			const uint CHAR_CODE_H = 104; ///< Char code from Ascii table
 
-			DirectionMovement movement = gameFigure.GetDirectionMovement(); ///< Direction Movement
+			GameFigure.DirectionMovement movement = gameFigure.GetDirectionMovement(); ///< Direction Movement
 
-			if (movement == DirectionMovement.Up)
+			if (movement == GameFigure.DirectionMovement.Up)
 			{
 				for (int i = 1; i < COUNT_ROWS; ++i)
 				{
-					if (presentPosition.Key + i <= CHAR_CODE_H && presentPosition.Key + i >= CHAR_CODE_A && (presentPosition.Value + i) <= COUNT_ROWS)
+					if (presentPosition.Key + i <= CHAR_CODE_H && presentPosition.Key + i >= CHAR_CODE_A && 
+						(presentPosition.Value + i) <= COUNT_ROWS)
 					{
 						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key + i), presentPosition.Value + i)); ///< Position addition
 					}
 				}
 			}
-			else if (movement == DirectionMovement.Down)
+			else if (movement == GameFigure.DirectionMovement.Down)
 			{
 				for (int i = 1; i < COUNT_ROWS; ++i)
 				{
-					if (presentPosition.Key - i <= CHAR_CODE_H && presentPosition.Key - i >= CHAR_CODE_A && presentPosition.Value - i >= 1)
+					if (presentPosition.Key - i <= CHAR_CODE_H && presentPosition.Key - i >= CHAR_CODE_A && 
+						presentPosition.Value - i >= 1)
 					{
 						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key - i), presentPosition.Value - i)); ///< Position addition
 					}
@@ -162,11 +165,14 @@ namespace Checkers.Logic
 			{
 				for (int i = 1; i < COUNT_ROWS; ++i)
 				{
-					if (presentPosition.Key + i <= CHAR_CODE_H && presentPosition.Key + i >= CHAR_CODE_A && (presentPosition.Value + i) <= COUNT_ROWS && movement != DirectionMovement.Up)
+					if (presentPosition.Key + i <= CHAR_CODE_H && presentPosition.Key + i >= CHAR_CODE_A && 
+						(presentPosition.Value + i) <= COUNT_ROWS && 
+						movement != GameFigure.DirectionMovement.Up)
 					{
 						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key + i), presentPosition.Value + i)); ///< Position addition
 					}
-					if (presentPosition.Key - i <= CHAR_CODE_H && presentPosition.Key - i >= CHAR_CODE_A && presentPosition.Value - i >= 1 && movement != DirectionMovement.Down)
+					if (presentPosition.Key - i <= CHAR_CODE_H && presentPosition.Key - i >= CHAR_CODE_A && 
+						presentPosition.Value - i >= 1 && movement != GameFigure.DirectionMovement.Down)
 					{
 						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key - i), presentPosition.Value - i)); ///< Position addition
 					}
@@ -176,6 +182,7 @@ namespace Checkers.Logic
 			return result;
 		}
 
+		// TODO: rewrite logic for first placement
 		public GameField()
 		{
 			const byte START_ROW_NUMBER_FOR_UPPER = 8;
@@ -227,6 +234,7 @@ namespace Checkers.Logic
 				{
 					GameFigure gameFigure = new GameFigure(GameFigure.GameColor.White, GameFigure.DirectionMovement.Down);
 					this._checkersField.Add(gameFigure, emptyCell);
+					this._emptyCells.Remove(emptyCell);
 				}
 			}
 
@@ -236,12 +244,19 @@ namespace Checkers.Logic
 				{
 					GameFigure gameFigure = new GameFigure(GameFigure.GameColor.Black, GameFigure.DirectionMovement.Up);
 					this._checkersField.Add(gameFigure, emptyCell);
+					this._emptyCells.Remove(emptyCell);
 				}
 			}
 
-			foreach (KeyValuePair<char, int> a in this._occupiedСell)
+			// Bad, rewrite
+			foreach (char symbol in chars1)
 			{
-				this._emptyCells.Remove(a);
+				this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 5));
+			}
+
+			foreach (char symbol in chars2)
+			{
+				this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 4));
 			}
 		}
 
@@ -329,5 +344,37 @@ namespace Checkers.Logic
 
 			return result;
 		}
-	}
+
+		public byte CheckWinner()
+        {
+            byte draw = 0;
+            byte whiteWin = 1;
+            byte blackWin = 2;
+
+            bool isWhiteWin = false;
+            bool isBlackWin = false;
+
+            foreach (KeyValuePair<GameFigure, KeyValuePair<char, int>> keyValue in this._checkersField)
+            {
+                if (keyValue.Key.GetColor() == GameFigure.GameColor.White)
+                {
+                    isWhiteWin = true;
+                }
+                else if (keyValue.Key.GetColor() == GameFigure.GameColor.Black)
+                {
+                    isBlackWin = true;
+                }
+                if (isWhiteWin && !isBlackWin)
+                {
+                    return whiteWin;
+                }
+                else if (!isWhiteWin && isBlackWin)
+                {
+                    return blackWin;
+                }
+            }
+
+            return draw;
+        }
+    }
 }
