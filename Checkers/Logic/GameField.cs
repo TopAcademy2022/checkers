@@ -104,12 +104,12 @@ namespace Checkers.Logic
 			{
 				for (byte i = 1; i < COUNT_ROWS; i++)
 				{
-					if ((currentPosition.Key + i) <= CHAR_CODE_H && currentPosition.Value - i >= 1 && 
+					if ((currentPosition.Key + i) <= CHAR_CODE_H && currentPosition.Value - i >= 1 &&
 						directionMovement == GameFigure.DirectionMovement.Up)
 					{
 						result.Add(new KeyValuePair<char, int>((char)(currentPosition.Key + i), currentPosition.Value - i));
 					}
-					if ((currentPosition.Key - i) >= CHAR_CODE_A && currentPosition.Value + i <= 8 && 
+					if ((currentPosition.Key - i) >= CHAR_CODE_A && currentPosition.Value + i <= 8 &&
 						directionMovement == GameFigure.DirectionMovement.Down)
 					{
 						result.Add(new KeyValuePair<char, int>((char)(currentPosition.Key - i), currentPosition.Value + i));
@@ -130,8 +130,8 @@ namespace Checkers.Logic
 			List<KeyValuePair<char, int>> result = new List<KeyValuePair<char, int>>(); ///< All possible positions
 			KeyValuePair<char, int> presentPosition = this._checkersField[gameFigure]; ///< Current position
 
-			const uint CHAR_CODE_A = 97; ///< Letter index
-			const uint CHAR_CODE_H = 104; ///< Letter index
+			const uint CHAR_CODE_A = 97; ///< Char code from Ascii table
+			const uint CHAR_CODE_H = 104; ///< Char code from Ascii table
 
 			GameFigure.DirectionMovement movement = gameFigure.GetDirectionMovement(); ///< Direction Movement
 
@@ -139,7 +139,7 @@ namespace Checkers.Logic
 			{
 				for (int i = 1; i < COUNT_ROWS; ++i)
 				{
-					if (presentPosition.Key + i <= CHAR_CODE_H && presentPosition.Key + i >= CHAR_CODE_A && 
+					if (presentPosition.Key + i <= CHAR_CODE_H && presentPosition.Key + i >= CHAR_CODE_A &&
 						(presentPosition.Value + i) <= COUNT_ROWS)
 					{
 						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key + i), presentPosition.Value + i)); ///< Position addition
@@ -150,7 +150,7 @@ namespace Checkers.Logic
 			{
 				for (int i = 1; i < COUNT_ROWS; ++i)
 				{
-					if (presentPosition.Key - i <= CHAR_CODE_H && presentPosition.Key - i >= CHAR_CODE_A && 
+					if (presentPosition.Key - i <= CHAR_CODE_H && presentPosition.Key - i >= CHAR_CODE_A &&
 						presentPosition.Value - i >= 1)
 					{
 						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key - i), presentPosition.Value - i)); ///< Position addition
@@ -162,13 +162,13 @@ namespace Checkers.Logic
 			{
 				for (int i = 1; i < COUNT_ROWS; ++i)
 				{
-					if (presentPosition.Key + i <= CHAR_CODE_H && presentPosition.Key + i >= CHAR_CODE_A && 
-						(presentPosition.Value + i) <= COUNT_ROWS && 
+					if (presentPosition.Key + i <= CHAR_CODE_H && presentPosition.Key + i >= CHAR_CODE_A &&
+						(presentPosition.Value + i) <= COUNT_ROWS &&
 						movement != GameFigure.DirectionMovement.Up)
 					{
 						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key + i), presentPosition.Value + i)); ///< Position addition
 					}
-					if (presentPosition.Key - i <= CHAR_CODE_H && presentPosition.Key - i >= CHAR_CODE_A && 
+					if (presentPosition.Key - i <= CHAR_CODE_H && presentPosition.Key - i >= CHAR_CODE_A &&
 						presentPosition.Value - i >= 1 && movement != GameFigure.DirectionMovement.Down)
 					{
 						result.Add(new KeyValuePair<char, int>((char)(presentPosition.Key - i), presentPosition.Value - i)); ///< Position addition
@@ -244,45 +244,121 @@ namespace Checkers.Logic
 			}
 		}
 
+		/*!
+		* @brief Possible figure movement.
+		 * @param[in] gameFigure - to determine the course.
+		 * @return List of every field coordinate.
+		 */
 		public List<KeyValuePair<char, int>> GetPossibleFigureMovement(GameFigure gameFigure)
 		{
 			List<KeyValuePair<char, int>> result = new List<KeyValuePair<char, int>>();
 
+			List<KeyValuePair<char, int>> leftDiagonal = this.GetLeftDiagonal(gameFigure);
+			List<KeyValuePair<char, int>> ridhtDiagonal = this.GetRightDiagonal(gameFigure);
 
+			switch (gameFigure.GetIsQueen()) ///< Queen check
+			{
+				case false:
+
+					if (this._emptyCells.Contains(leftDiagonal.FirstOrDefault())) ///< Checking an empty cell
+					{
+						result.Add(leftDiagonal.FirstOrDefault()); ///< Add the result to our List
+					}
+					else
+					{
+						if (this._checkersField.Where(el => el.Value.Key == leftDiagonal.FirstOrDefault().Key && el.Value.Value == leftDiagonal.FirstOrDefault().Value).First().Key.GetColor() != gameFigure.GetColor())
+						{
+							for (int i = 1; i < leftDiagonal.Count; i += 2)
+							{
+								if (this._emptyCells.Contains(leftDiagonal[i])) ///< Checking an empty cell
+								{
+									result.Add(leftDiagonal[i]); ///< Add the result to our List
+								}
+								else
+								{
+									break;
+								}
+							}
+						}
+					}
+
+					if (this._emptyCells.Contains(ridhtDiagonal.FirstOrDefault())) ///< Checking an empty cell
+					{
+						result.Add(ridhtDiagonal.FirstOrDefault()); ///< Add the result to our List
+					}
+					else
+					{
+						if (this._checkersField.Where(el => el.Value.Key == ridhtDiagonal.FirstOrDefault().Key && el.Value.Value == ridhtDiagonal.FirstOrDefault().Value).First().Key.GetColor() != gameFigure.GetColor())
+						{
+							for (int i = 1; i < ridhtDiagonal.Count; i += 2)
+							{
+								if (this._emptyCells.Contains(ridhtDiagonal[i])) ///< Checking an empty cell
+								{
+									result.Add(ridhtDiagonal[i]); ///< Add the result to our List
+								}
+								else
+								{
+									break;
+								}
+							}
+						}
+					}
+
+					break;
+
+				case true:
+
+					foreach (KeyValuePair<char, int> left in leftDiagonal)
+					{
+						if (this._emptyCells.Contains(left)) ///< Checking an empty cell
+						{
+							result.Add(left); ///< Add the result to our List
+						}
+					}
+					foreach (KeyValuePair<char, int> ridht in ridhtDiagonal)
+					{
+						if (this._emptyCells.Contains(ridht)) ///< Checking an empty cell
+						{
+							result.Add(ridht); ///< Add the result to our List
+						}
+					}
+
+					break;
+			}
 
 			return result;
 		}
-       
+
 		public byte CheckWinner()
-        {
-            byte draw = 0;
-            byte whiteWin = 1;
-            byte blackWin = 2;
+		{
+			byte draw = 0;
+			byte whiteWin = 1;
+			byte blackWin = 2;
 
-            bool isWhiteWin = false;
-            bool isBlackWin = false;
+			bool isWhiteWin = false;
+			bool isBlackWin = false;
 
-            foreach (KeyValuePair<GameFigure, KeyValuePair<char, int>> keyValue in this._checkersField)
-            {
-                if (keyValue.Key.GetColor() == GameFigure.GameColor.White)
-                {
-                    isWhiteWin = true;
-                }
-                else if (keyValue.Key.GetColor() == GameFigure.GameColor.Black)
-                {
-                    isBlackWin = true;
-                }
-                if (isWhiteWin && !isBlackWin)
-                {
-                    return whiteWin;
-                }
-                else if (!isWhiteWin && isBlackWin)
-                {
-                    return blackWin;
-                }
-            }
+			foreach (KeyValuePair<GameFigure, KeyValuePair<char, int>> keyValue in this._checkersField)
+			{
+				if (keyValue.Key.GetColor() == GameFigure.GameColor.White)
+				{
+					isWhiteWin = true;
+				}
+				else if (keyValue.Key.GetColor() == GameFigure.GameColor.Black)
+				{
+					isBlackWin = true;
+				}
+				if (isWhiteWin && !isBlackWin)
+				{
+					return whiteWin;
+				}
+				else if (!isWhiteWin && isBlackWin)
+				{
+					return blackWin;
+				}
+			}
 
-            return draw;
-        }
-    }
+			return draw;
+		}
+	}
 }
