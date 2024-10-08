@@ -1,7 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Checkers.Logic;
 using Checkers.Logic.Interfaces;
+using System.Windows.Shapes;
 
 namespace Checkers.Graphics
 {
@@ -53,11 +55,27 @@ namespace Checkers.Graphics
 
 		public void RerenderGameField()
 		{
-            // Clear
-            this.Children.Clear();
+			// Clear
+			this.Children.Clear();
 
-            // Render again
-            this.RenderGameField();
+			// Render again
+			this.RenderGameField();
+		}
+
+		/*!
+		* @brief Showing possible figure movements.
+		 */
+		public void ShowPossibleMoves(List<byte[]> positions)
+		{
+			foreach (byte[] position in positions) ///< Foreach through List
+			{
+				GraficalFigurePosibleMovement graficalFigurePosibleMovement = new GraficalFigurePosibleMovement();
+
+				this.Children.Add(graficalFigurePosibleMovement);
+
+				Grid.SetRow(graficalFigurePosibleMovement, position[0]);
+				Grid.SetColumn(graficalFigurePosibleMovement, position[1]);
+			}
 		}
 	}
 }
