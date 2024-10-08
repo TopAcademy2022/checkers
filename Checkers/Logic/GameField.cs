@@ -16,7 +16,13 @@ namespace Checkers.Logic
 
 		public const byte COUNT_COLLUMNS = 8;
 
-		private void MoveFigureToCell(GameFigure gameFigure, KeyValuePair<char, int> destinationCell)
+        /*! 
+		* @brief checks if the cell is empty and makes a move to the destination cell.
+		* @param[in] . Game figure and destination cell.
+		* @return True -  destination cell; False - Destination cell not found.
+		*/
+
+        private void MoveFigureToCell(GameFigure gameFigure, KeyValuePair<char, int> destinationCell)
 		{
 			try
 			{
