@@ -39,7 +39,7 @@ namespace Checkers.Logic
 
 				byte row = (byte)(8 - pair.Value);
 
-				byte[] array = { column, row };
+				byte[] array = { row, column };
 				result.Add(array);
 			}
 

@@ -9,7 +9,7 @@ namespace Checkers.Graphics
 {
 	public class GraphicalGameField : Grid
 	{
-		private ICheckersInterface _gameField; 
+		private ICheckersInterface _gameField;
 
 		public GraphicalGameField(Window parentElement)
 		{
@@ -67,23 +67,14 @@ namespace Checkers.Graphics
 		 */
 		public void ShowPossibleMoves(List<byte[]> positions)
 		{
-			byte[,] gameField = this._gameField.GetGameFieldAsByteArray(); ///< Getting the Game Field
-
 			foreach (byte[] position in positions) ///< Foreach through List
 			{
-				Rectangle rectangle = new Rectangle() ///< Creating the possible field movements
-				{
-					Fill = new SolidColorBrush()
-					{
-						Color = Color.FromRgb(255, 0, 0) ///< Red rectangle
-					},
-					Opacity = 0.50 
-				};
+				GraficalFigurePosibleMovement graficalFigurePosibleMovement = new GraficalFigurePosibleMovement();
 
-				this.Children.Add(rectangle);
+				this.Children.Add(graficalFigurePosibleMovement);
 
-				Grid.SetRow(rectangle, position[1]);
-				Grid.SetColumn(rectangle, position[0]);
+				Grid.SetRow(graficalFigurePosibleMovement, position[0]);
+				Grid.SetColumn(graficalFigurePosibleMovement, position[1]);
 			}
 		}
 	}
