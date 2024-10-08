@@ -28,5 +28,22 @@ namespace Checkers.Logic
 
 			return result;
 		}
+
+		public List<byte[]> GetPossibleMovementsAsByteArrayList(List<KeyValuePair<char, int>> positions)
+		{
+			List<byte[]> result = new List<byte[]>();
+
+			foreach (KeyValuePair<char, int> pair in positions)
+			{
+				byte column = (byte)(pair.Key - 'A');
+
+				byte row = (byte)(8 - pair.Value);
+
+				byte[] array = { column, row };
+				result.Add(array);
+			}
+
+			return result;
+		}
 	}
 }

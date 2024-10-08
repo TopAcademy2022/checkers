@@ -1,13 +1,15 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Checkers.Logic;
 using Checkers.Logic.Interfaces;
+using System.Windows.Shapes;
 
 namespace Checkers.Graphics
 {
 	public class GraphicalGameField : Grid
 	{
-		private ICheckersInterface _gameField;
+		private ICheckersInterface _gameField; 
 
 		public GraphicalGameField(Window parentElement)
 		{
@@ -53,11 +55,36 @@ namespace Checkers.Graphics
 
 		public void RerenderGameField()
 		{
-            // Clear
-            this.Children.Clear();
+			// Clear
+			this.Children.Clear();
 
-            // Render again
-            this.RenderGameField();
+			// Render again
+			this.RenderGameField();
+		}
+
+		/*!
+		* @brief Showing possible figure movements.
+		 */
+		public void ShowPossibleMoves(List<byte[]> positions)
+		{
+			byte[,] gameField = this._gameField.GetGameFieldAsByteArray(); ///< Getting the Game Field
+
+			foreach (byte[] position in positions) ///< Foreach through List
+			{
+				Rectangle rectangle = new Rectangle() ///< Creating the possible field movements
+				{
+					Fill = new SolidColorBrush()
+					{
+						Color = Color.FromRgb(255, 0, 0) ///< Red rectangle
+					},
+					Opacity = 0.50 
+				};
+
+				this.Children.Add(rectangle);
+
+				Grid.SetRow(rectangle, position[1]);
+				Grid.SetColumn(rectangle, position[0]);
+			}
 		}
 	}
 }
