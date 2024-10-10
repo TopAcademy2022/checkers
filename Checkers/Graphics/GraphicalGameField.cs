@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
+using System.Windows.Input;
 using Checkers.Logic;
 using Checkers.Logic.Interfaces;
-using System.Windows.Shapes;
+
 
 namespace Checkers.Graphics
 {
@@ -35,6 +35,7 @@ namespace Checkers.Graphics
 					if (logicalGameField[i, k] == 1)
 					{
 						GraphicalGameFigure gameFigure = new GraphicalGameFigure(true);
+						gameFigure.Click += this.OnFigureClick;
 
 						this.Children.Add(gameFigure);//< Белые
 						Grid.SetRow(gameFigure, i);
@@ -43,6 +44,7 @@ namespace Checkers.Graphics
 					else if (logicalGameField[i, k] == 2)
 					{
 						GraphicalGameFigure gameFigure = new GraphicalGameFigure(false);
+						gameFigure.Click += this.OnFigureClick;
 
 						this.Children.Add(gameFigure);//< Черные
 						Grid.SetRow(gameFigure, i);
@@ -70,12 +72,36 @@ namespace Checkers.Graphics
 			foreach (byte[] position in positions) ///< Foreach through List
 			{
 				GraficalFigurePosibleMovement graficalFigurePosibleMovement = new GraficalFigurePosibleMovement();
+				graficalFigurePosibleMovement.Click += this.IgorFigureMovement;
+
 
 				this.Children.Add(graficalFigurePosibleMovement);
 
 				Grid.SetRow(graficalFigurePosibleMovement, position[0]);
 				Grid.SetColumn(graficalFigurePosibleMovement, position[1]);
 			}
+		}
+
+		public void OnFigureClick(object sender, EventArgs e)
+		{
+			Button myButton = sender as Button;
+			byte row = Grid.GetRow(myButton);
+			byte coll = Grid.GetColumn(myButton);
+
+			ShowPossibleMoves(this._gameField.GetPossibleMovementsAsByteArrayList([row, coll]));
+		}
+
+		public void DisplayMoveFigure(object sender, KeyEventArgs e)
+		{
+			GraficalFigurePosibleMovement graficalFigurePosibleMovement = new GraficalFigurePosibleMovement();
+
+			byte[] logicalGameField = [Convert.ToByte(Canvas.GetLeft(graficalFigurePosibleMovement)), Convert.ToByte(Canvas.GetTop(graficalFigurePosibleMovement))];
+
+			ShowPossibleMoves(this._gameField.GetPossibleMovementsAsByteArrayList());
+
+			
+			//Canvas.SetLeft(MyButton, left + 10);
+			//Canvas.SetTop(MyButton, top + 10);
 		}
 	}
 }
