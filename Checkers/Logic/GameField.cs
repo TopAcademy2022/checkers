@@ -16,10 +16,25 @@ namespace Checkers.Logic
 
 		public const byte COUNT_COLLUMNS = 8;
 
+		/*! 
+		* @brief Checks if the cell is empty and makes a move to the destination cell.
+		* @param[in] gameFigure - The figure that will be walking.
+		* @param[in] destinationCell - Destination cell.
+		*/
 		private void MoveFigureToCell(GameFigure gameFigure, KeyValuePair<char, int> destinationCell)
 		{
+			/*! 
+			* @exception Exception Thrown when existing cell destination or it was not found.
+			*/
 			try
 			{
+				/*! 
+				* @if Destination cell is empty cell list.
+				*	Moving figure.
+				* @else
+				*	Create exception.
+				* @endif
+				*/
 				if (this._emptyCells.Contains(destinationCell))
 				{
 					this._emptyCells.Add(this._checkersField[gameFigure]);
@@ -246,9 +261,9 @@ namespace Checkers.Logic
 
 		/*!
 		* @brief Possible figure movement.
-		 * @param[in] gameFigure - to determine the course.
-		 * @return List of every field coordinate.
-		 */
+		* @param[in] gameFigure - to determine the course.
+		* @return List of every field coordinate.
+		*/
 		public List<KeyValuePair<char, int>> GetPossibleFigureMovement(GameFigure gameFigure)
 		{
 			List<KeyValuePair<char, int>> result = new List<KeyValuePair<char, int>>();
