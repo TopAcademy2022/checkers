@@ -10,7 +10,9 @@ namespace Checkers.Logic
 
 		private readonly Dictionary<GameFigure, KeyValuePair<char, int>> _checkersField;
 
-		public IReadOnlyDictionary<GameFigure, KeyValuePair<char, int>> CheckersField => this._checkersField;
+        public IReadOnlyList<KeyValuePair<char, int>> EmptyCells => this._emptyCells;
+
+        public IReadOnlyDictionary<GameFigure, KeyValuePair<char, int>> CheckersField => this._checkersField;
 
 		public const byte COUNT_ROWS = 8;
 
@@ -197,74 +199,77 @@ namespace Checkers.Logic
 		// TODO: rewrite logic for first placement
 		public GameField()
 		{
-			const byte START_ROW_NUMBER_FOR_UPPER = 8;
-			const byte FINISH_ROW_NUMBER_FOR_UPPER = 6;
+            using ILoggerFactory factory = LoggerFactory.Create(builder => builder.AddConsole());
+            this._logger = factory.CreateLogger<GameField>();
 
-			const byte START_ROW_NUMBER_FOR_LOWER = 3;
-			const byte FINISH_ROW_NUMBER_FOR_LOWER = 1;
+            this._emptyCells = new List<KeyValuePair<char, int>>();
+            this._checkersField = new Dictionary<GameFigure, KeyValuePair<char, int>>();
+        }
 
-			using ILoggerFactory factory = LoggerFactory.Create(builder => builder.AddConsole());
-			this._logger = factory.CreateLogger<GameField>();
+		public void PlaceFigures()
+		{
+            const byte START_ROW_NUMBER_FOR_UPPER = 8;
+            const byte FINISH_ROW_NUMBER_FOR_UPPER = 6;
 
-			this._emptyCells = new List<KeyValuePair<char, int>>();
-			this._checkersField = new Dictionary<GameFigure, KeyValuePair<char, int>>();
+            const byte START_ROW_NUMBER_FOR_LOWER = 3;
+            const byte FINISH_ROW_NUMBER_FOR_LOWER = 1;
 
-			char[] chars1 = { 'a', 'c', 'e', 'g' };
+            char[] chars1 = { 'a', 'c', 'e', 'g' };
 
-			foreach (char symbol in chars1)
-			{
-				this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 1));
-				this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 3));
-				this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 7));
-			}
+            foreach (char symbol in chars1)
+            {
+                this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 1));
+                this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 3));
+                this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 7));
+            }
 
-			char[] chars2 = { 'b', 'd', 'f', 'h' };
+            char[] chars2 = { 'b', 'd', 'f', 'h' };
 
-			foreach (char symbol in chars2)
-			{
-				this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 2));
-				this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 6));
-				this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 8));
-			}
+            foreach (char symbol in chars2)
+            {
+                this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 2));
+                this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 6));
+                this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 8));
+            }
 
-			for (byte i = START_ROW_NUMBER_FOR_UPPER; i >= FINISH_ROW_NUMBER_FOR_UPPER; i--)
-			{
-				foreach (KeyValuePair<char, int> emptyCell in this.GetEmptyCellInRow(i))
-				{
-					GameFigure gameFigure = new GameFigure(GameFigure.GameColor.White, GameFigure.DirectionMovement.Down);
-					this._checkersField.Add(gameFigure, emptyCell);
-					this._emptyCells.Remove(emptyCell);
-				}
-			}
+            for (byte i = START_ROW_NUMBER_FOR_UPPER; i >= FINISH_ROW_NUMBER_FOR_UPPER; i--)
+            {
+                foreach (KeyValuePair<char, int> emptyCell in this.GetEmptyCellInRow(i))
+                {
+                    GameFigure gameFigure = new GameFigure(GameFigure.GameColor.White, GameFigure.DirectionMovement.Down);
+                    this._checkersField.Add(gameFigure, emptyCell);
+                    this._emptyCells.Remove(emptyCell);
+                }
+            }
 
-			for (byte i = START_ROW_NUMBER_FOR_LOWER; i >= FINISH_ROW_NUMBER_FOR_LOWER; i--)
-			{
-				foreach (KeyValuePair<char, int> emptyCell in this.GetEmptyCellInRow(i))
-				{
-					GameFigure gameFigure = new GameFigure(GameFigure.GameColor.Black, GameFigure.DirectionMovement.Up);
-					this._checkersField.Add(gameFigure, emptyCell);
-					this._emptyCells.Remove(emptyCell);
-				}
-			}
+            for (byte i = START_ROW_NUMBER_FOR_LOWER; i >= FINISH_ROW_NUMBER_FOR_LOWER; i--)
+            {
+                foreach (KeyValuePair<char, int> emptyCell in this.GetEmptyCellInRow(i))
+                {
+                    GameFigure gameFigure = new GameFigure(GameFigure.GameColor.Black, GameFigure.DirectionMovement.Up);
+                    this._checkersField.Add(gameFigure, emptyCell);
+                    this._emptyCells.Remove(emptyCell);
+                }
+            }
 
-			// Bad, rewrite
-			foreach (char symbol in chars1)
-			{
-				this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 5));
-			}
+            // Bad, rewrite
+            foreach (char symbol in chars1)
+            {
+                this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 5));
+            }
 
-			foreach (char symbol in chars2)
-			{
-				this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 4));
-			}
-		}
+            foreach (char symbol in chars2)
+            {
+                this._emptyCells.Add(new KeyValuePair<char, int>(symbol, 4));
+            }
+        }
 
-		/*!
+        /*!
 		* @brief Possible figure movement.
 		* @param[in] gameFigure - to determine the course.
 		* @return List of every field coordinate.
 		*/
-		public List<KeyValuePair<char, int>> GetPossibleFigureMovement(GameFigure gameFigure)
+        public List<KeyValuePair<char, int>> GetPossibleFigureMovement(GameFigure gameFigure)
 		{
 			List<KeyValuePair<char, int>> result = new List<KeyValuePair<char, int>>();
 
