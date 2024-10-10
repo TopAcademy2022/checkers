@@ -337,16 +337,15 @@ namespace Checkers.Logic
 		*/
 		public bool MoveFigure(GameFigure gameFigure, KeyValuePair<char, int> destinationCell)
 		{
-			List<KeyValuePair<char, int>> possiblePositions = this.GetPossibleFigureMovement(gameFigure); ///< Positions possible 
-
+			List<KeyValuePair<char, int>> possiblePositions = this.GetPossibleFigureMovement(gameFigure); ///< Positions possible.
 			/*!
-			 * @if Checking destination сell for possible cells.
+			 * @if Checking destination сell in possible cells.
 			 *		Figure movement.
 			 * @endif
 			 */
-			if (possiblePositions.Contains(destinationCell)) ///< cell match check
+			if (possiblePositions.Contains(destinationCell))
 			{
-				this.MoveFigureToCell(gameFigure, destinationCell); ///< Figure movement
+				this.MoveFigureToCell(gameFigure, destinationCell);
 				return true;
 			}
 
