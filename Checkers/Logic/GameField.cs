@@ -330,14 +330,15 @@ namespace Checkers.Logic
 		}
 
 		/*!
-		* @brief Gets a list of free cells and move figure.
-		* @param[in] gameFigure - Game piece that will move.
-		* @param[in] destinationCell - Destination cell game piece.
-		* @return True - on a successful move; False - relocation failed.
-		*/
+		 * @brief Gets a list of free cells and move figure.
+		 * @param[in] gameFigure - Game piece that will move.
+		 * @param[in] destinationCell - Destination cell game piece.
+		 * @return True - on a successful move; False - relocation failed.
+		 */
 		public bool MoveFigure(GameFigure gameFigure, KeyValuePair<char, int> destinationCell)
 		{
 			List<KeyValuePair<char, int>> possiblePositions = this.GetPossibleFigureMovement(gameFigure); ///< Positions possible.
+
 			/*!
 			 * @if Checking destination сell in possible cells.
 			 *		Figure movement.
