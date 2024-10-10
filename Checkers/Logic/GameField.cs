@@ -329,6 +329,26 @@ namespace Checkers.Logic
 			return result;
 		}
 
+		/*!
+	* @brief Realizes the movement of the figure.
+	 * @param[in] gameFigure - game piece that will move.
+	 * @param[in] destinationCell - destination cell game piece.
+	 * @return true - on a successful move ; false - relocation failed.
+	 */
+		public bool MoveFigure(GameFigure gameFigure, KeyValuePair<char, int> destinationCell)
+		{
+			List<KeyValuePair<char, int>> possiblePositions = new List<KeyValuePair<char, int>>(this.GetPossibleFigureMovement(gameFigure)); ///< Positions possible 
+
+			if (possiblePositions.Contains(destinationCell)) ///< cell match check
+			{
+				this.MoveFigureToCell(gameFigure, destinationCell); ///< Figure movement
+
+				return true;
+			}
+
+			return false;
+		}
+
 		public byte CheckWinner()
 		{
 			byte draw = 0;
