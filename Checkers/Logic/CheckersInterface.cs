@@ -7,8 +7,9 @@ namespace Checkers.Logic
 		public byte[,] GetGameFieldAsByteArray()
 		{
 			GameField gameField = new GameField();
+			gameField.PlaceFigures();
 
-			const byte COUNT_ROWS = 8;
+            const byte COUNT_ROWS = 8;
 			const byte COUNT_COLLUMNS = 8;
 
 			byte[,] result = new byte[COUNT_ROWS, COUNT_COLLUMNS];
